@@ -325,7 +325,7 @@ export default function LandingPage() {
               <img
                 src="/logo.png"
                 alt="JaldiWala - 10-Minute Grocery Delivery"
-                className="h-11 md:h-14 w-auto object-contain transition-transform group-hover:scale-105"
+                className="h-12 md:h-16 w-auto object-contain transition-transform group-hover:scale-105"
               />
               <div className="hidden lg:flex flex-col">
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-950 border border-amber-400/50 text-[10px] font-bold text-slate-200 shadow-sm">
@@ -998,7 +998,7 @@ export default function LandingPage() {
           {/* 4-Column Directory Grid */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-slate-100">
             <div className="space-y-3">
-              <img src="/logo.png" alt="JaldiWala" className="h-12 w-auto object-contain" />
+              <img src="/logo.png" alt="JaldiWala" className="h-16 w-auto object-contain" />
               <p className="text-slate-500 text-xs leading-relaxed">
                 India's vertically integrated own-inventory quick commerce platform. Serving Noida & Delhi NCR with 10-minute grocery fulfillment.
               </p>
