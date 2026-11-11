@@ -50,8 +50,8 @@ export class AppController {
   root(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     const accept = (req.headers.accept || '').toLowerCase();
 
-    // If client explicitly requested JSON (e.g. cURL -H "Accept: application/json")
-    if (accept === 'application/json') {
+    // If client specifically prefers JSON and not HTML (e.g. API clients, cURL, Postman)
+    if (accept.includes('application/json') && !accept.includes('text/html')) {
       res.setHeader('Content-Type', 'application/json');
       return {
         name: 'JaldiWala Quick Commerce Platform',
