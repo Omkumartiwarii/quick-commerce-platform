@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JaldiWala | 10-Minute Grocery Delivery in Noida (Zepto/Blinkit Model)</title>
+  <link rel="icon" type="image/png" href="jaldiwala-logo.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+  </style>
+</head>
+<body class="bg-[#F7F8FA] text-slate-900 selection:bg-red-600 selection:text-white pb-20 antialiased">
+
+  <!-- TOP ANNOUNCEMENT STRIP -->
+  <div class="bg-gradient-to-r from-red-600 via-rose-600 to-indigo-950 text-white text-xs py-2 px-4 shadow-sm">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-3 font-medium">
+      <div class="flex items-center gap-2 truncate">
+        <span class="bg-white/20 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider">
+          Launch Offer
+        </span>
+        <span class="truncate">
+          Flat <strong>₹100 OFF</strong> on your first order with code <span class="font-mono bg-white text-red-600 px-1.5 py-0.5 rounded font-black">JALDI100</span> • Free delivery above ₹199!
+        </span>
+      </div>
+      <div class="hidden md:flex items-center gap-4 text-xs shrink-0 text-white/90">
+        <span>🛡️ 100% Owned Inventory</span>
+        <span>•</span>
+        <span>📜 FSSAI Certified Cold Chain</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STICKY HEADER -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4 lg:gap-8">
+      <!-- Logo & Location -->
+      <div class="flex items-center gap-5 shrink-0">
+        <div class="cursor-pointer group flex items-center">
+          <img src="jaldiwala-logo.png" alt="JaldiWala" class="h-12 md:h-14 w-auto object-contain transition-transform group-hover:scale-105" />
+        </div>
+
+        <button onclick="toggleLocModal(true)" class="hidden sm:flex items-center gap-2.5 px-3 py-1.5 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-all text-left">
+          <div class="w-7 h-7 rounded-xl bg-red-100 flex items-center justify-center text-red-600 shrink-0">
+            📍
+          </div>
+          <div class="max-w-[170px] lg:max-w-[210px]">
+            <div class="flex items-center gap-1.5">
+              <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Delivery in</span>
+              <span class="px-1.5 py-0.2 rounded text-[10px] font-black bg-emerald-100 text-emerald-800" id="headerEtaPill">
+                ⚡ 8-10 mins
+              </span>
+            </div>
+            <div class="flex items-center gap-1">
+              <span class="text-xs font-black text-slate-900 truncate" id="headerLocName">Noida Sector 62</span>
+              <span class="text-xs text-slate-400">▾</span>
+            </div>
+          </div>
+        </button>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="flex-1 max-w-2xl">
+        <div class="relative">
+          <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">🔍</span>
+          <input
+            id="searchInput"
+            type="text"
+            placeholder='Search "milk", "atta", "chips", "coke zero", "tomatoes"...'
+            oninput="handleSearch(this.value)"
+            class="w-full bg-slate-100/90 hover:bg-slate-100 focus:bg-white text-xs md:text-sm pl-11 pr-10 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all shadow-inner"
+          />
+        </div>
+      </div>
+
+      <!-- Cart Button -->
+      <div class="shrink-0">
+        <button
+          onclick="toggleCart(true)"
+          class="flex items-center gap-2.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white px-4 py-2.5 rounded-2xl font-black text-xs md:text-sm shadow-md shadow-red-600/25 hover:shadow-lg transition-all active:scale-95"
+        >
+          <span>🛍️ My Basket</span>
+          <span id="headerCartBadge" class="bg-white text-red-600 text-xs font-black px-2 py-0.5 rounded-full">
+            2 • ₹92
+          </span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="max-w-7xl mx-auto px-4 pt-6 pb-2">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="md:col-span-2 relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-950 via-slate-900 to-red-950 text-white p-6 sm:p-8 flex flex-col justify-between shadow-lg">
+        <div class="absolute top-0 right-0 w-80 h-80 bg-red-600/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="relative z-10 space-y-3 max-w-lg">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-600 text-white text-[11px] font-black uppercase tracking-wider shadow-sm">
+            ✨ Guaranteed 10-Minute Delivery
+          </span>
+          <h1 class="text-2xl sm:text-4xl font-black tracking-tight leading-tight">
+            Daily Essentials & Groceries, <br />
+            Delivered in <span class="text-red-400 underline decoration-wavy decoration-orange-400">10 Minutes!</span>
+          </h1>
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            Direct from mandi & certified FMCG brands. Stored in temperature-controlled dark stores across Noida.
+          </p>
+        </div>
+        <div class="relative z-10 pt-6 flex flex-wrap items-center gap-3">
+          <div class="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-white/15 text-xs">
+            <span>⚡ Dedicated EV Fleet</span>
+          </div>
+          <div class="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-white/15 text-xs">
+            <span>🛡️ 100% Owned Inventory</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-3xl bg-gradient-to-br from-amber-500 to-orange-600 text-white p-6 flex flex-col justify-between shadow-lg">
+        <div class="space-y-2">
+          <span class="bg-black/20 text-white text-[10px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
+            Noida Special
+          </span>
+          <h3 class="text-xl font-black leading-tight">
+            Get ₹100 Flat OFF on Orders Above ₹199
+          </h3>
+          <p class="text-xs text-amber-100">
+            Use code <strong class="font-mono bg-white text-orange-600 px-1.5 py-0.5 rounded">JALDI100</strong> at checkout!
+          </p>
+        </div>
+        <div class="pt-4">
+          <div class="bg-white/20 backdrop-blur-sm p-3 rounded-2xl border border-white/20 flex items-center justify-between">
+            <div>
+              <div class="text-xs text-amber-100">Dark Store Serving You</div>
+              <div class="text-sm font-black" id="heroStoreHub">JaldiWala Hub #04</div>
+            </div>
+            <div class="text-2xl font-black bg-white text-orange-600 px-3 py-1 rounded-xl shadow-sm">
+              ⚡ 8m
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORY TILES -->
+  <section class="max-w-7xl mx-auto px-4 py-6">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-black text-slate-900 tracking-tight">Explore Categories</h2>
+      <span class="text-xs font-bold text-red-600">Fresh Inward Today</span>
+    </div>
+    <div class="grid grid-cols-4 sm:grid-cols-8 gap-3" id="categoryContainer"></div>
+  </section>
+
+  <!-- PRODUCTS GRID -->
+  <section class="max-w-7xl mx-auto px-4 py-2">
+    <div class="flex items-center justify-between mb-5">
+      <div>
+        <h2 id="shelfTitle" class="text-xl font-black text-slate-900 tracking-tight">Trending in Noida Today</h2>
+        <p class="text-xs text-slate-500 mt-0.5" id="shelfSub">Items in stock for immediate 10-minute dispatch</p>
+      </div>
+      <span class="px-3 py-1 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-black flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        100% In-Stock Guarantee
+      </span>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4" id="productsGrid"></div>
+  </section>
+
+  <!-- TRUST VALUE PROP -->
+  <section class="max-w-7xl mx-auto px-4 py-12">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center text-xl shrink-0">⚡</div>
+        <div>
+          <h4 class="font-bold text-sm text-slate-900">10-Minute Rapid Delivery</h4>
+          <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+            Hyperlocal dark stores located within a 3 km radius across Noida ensure delivery before your tea is ready.
+          </p>
+        </div>
+      </div>
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl shrink-0">🛡️</div>
+        <div>
+          <h4 class="font-bold text-sm text-slate-900">100% Owned Inventory</h4>
+          <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+            We own our warehouses, cold chains, and inventory. No third-party kirana shop delays or out-of-stock cancellations.
+          </p>
+        </div>
+      </div>
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl shrink-0">❄️</div>
+        <div>
+          <h4 class="font-bold text-sm text-slate-900">Certified Cold Chain (0-4°C)</h4>
+          <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+            Dairy, meats, and ice creams are preserved at certified sub-zero temperatures and delivered in insulated rider bags.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CART DRAWER -->
+  <div id="cartDrawer" class="fixed inset-0 z-50 flex justify-end hidden">
+    <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="toggleCart(false)"></div>
+    <div class="relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col z-10">
+      <div class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+        <h3 class="font-black text-slate-900 text-base" id="cartTitle">My Basket</h3>
+        <button onclick="toggleCart(false)" class="w-8 h-8 rounded-full bg-slate-200 hover:bg-slate-300 flex items-center justify-center font-bold">✕</button>
+      </div>
+      <div class="p-3 bg-red-50 border-b border-red-100 flex items-center justify-between text-xs">
+        <span class="font-bold text-red-950">📍 Delivering to Noida Sector 62 in 9 mins</span>
+        <span class="font-black text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded text-[10px]">⚡ 8-10 MINS</span>
+      </div>
+      <div class="p-3 bg-slate-50 border-b border-slate-200 text-xs" id="cartFreeDeliveryMeter"></div>
+      <div class="flex-1 overflow-y-auto p-4 space-y-3" id="cartItemsList"></div>
+      <div class="p-4 border-t border-slate-200 bg-slate-50 space-y-3" id="cartSummary"></div>
+    </div>
+  </div>
+
+  <!-- LOCATION MODAL -->
+  <div id="locModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="toggleLocModal(false)"></div>
+    <div class="relative w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 z-10">
+      <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+        <h3 class="font-black text-slate-900 text-lg">Select Noida Delivery Zone</h3>
+        <button onclick="toggleLocModal(false)" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center font-bold">✕</button>
+      </div>
+      <div class="space-y-2 max-h-80 overflow-y-auto" id="locListContainer"></div>
+    </div>
+  </div>
+
+  <!-- LIVE ORDER MODAL -->
+  <div id="orderModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div class="fixed inset-0 bg-slate-900/75 backdrop-blur-md" onclick="toggleOrderModal(false)"></div>
+    <div class="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl p-6 z-10 overflow-hidden">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
+        <div class="flex items-center gap-2">
+          <img src="jaldiwala-logo.png" class="h-10 w-auto object-contain" />
+          <div>
+            <span class="text-[10px] font-black text-red-600 uppercase tracking-widest">Live Telematics Dispatch</span>
+            <h3 class="text-lg font-black text-slate-900">Order #JW-NOIDA-62-9821</h3>
+          </div>
+        </div>
+        <button onclick="toggleOrderModal(false)" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center font-bold">✕</button>
+      </div>
+
+      <div class="bg-gradient-to-r from-red-600 via-rose-600 to-indigo-950 text-white rounded-2xl p-4 mb-5 shadow-md">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-xs uppercase tracking-wider font-semibold opacity-90">Arriving At Your Door</p>
+            <p class="text-3xl font-black tracking-tight" id="orderTimer">8 Mins 42 Secs</p>
+          </div>
+          <div class="text-3xl">⚡</div>
+        </div>
+        <p class="text-[11px] text-red-100 mt-2">
+          Delivering to: <strong class="text-white">B-Block, Noida Sector 62</strong>
+        </p>
+      </div>
+
+      <div class="space-y-3.5 mb-5" id="orderTimeline">
+        <div class="flex items-start gap-3">
+          <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold">✓</div>
+          <div>
+            <h4 class="text-xs font-bold text-slate-900">Order Placed & Confirmed</h4>
+            <p class="text-[11px] text-slate-500">Verified via Razorpay UPI</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold">✓</div>
+          <div>
+            <h4 class="text-xs font-bold text-slate-900">Store Accepted & Picking Items</h4>
+            <p class="text-[11px] text-slate-500">JaldiWala Hub #04 (Barcode scan SLA 72s)</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold">✓</div>
+          <div>
+            <h4 class="text-xs font-bold text-slate-900">Packed & Barcode Verified</h4>
+            <p class="text-[11px] text-slate-500">FEFO checked & security sealed</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center text-xs font-bold animate-pulse">🚚</div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h4 class="text-xs font-bold text-slate-900">Rider Out for Delivery</h4>
+              <span class="px-1.5 py-0.2 rounded text-[9px] font-black bg-red-100 text-red-700 animate-pulse">LIVE TRACKING</span>
+            </div>
+            <p class="text-[11px] text-slate-500">Ramesh Kumar (Hero Splendor EV • 4.9 ★)</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200/80 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-bold text-amber-900">Delivery Confirmation OTP</p>
+          <p class="text-[11px] text-amber-700">Share with rider upon bag handover</p>
+        </div>
+        <div class="font-mono text-xl font-black text-amber-950 tracking-widest bg-white px-3 py-1 rounded-xl border border-amber-300">
+          4829
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-200 bg-white text-slate-600 text-xs mt-16">
+    <div class="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div class="space-y-3">
+        <img src="jaldiwala-logo.png" alt="JaldiWala" class="h-12 w-auto object-contain" />
+        <p class="text-slate-500 text-xs leading-relaxed">
+          India's vertically integrated own-inventory quick commerce platform. Serving Noida & Delhi NCR with 10-minute grocery fulfillment.
+        </p>
+        <div class="pt-2 text-[11px] text-slate-400">
+          FSSAI License: <span class="font-mono text-slate-600">10022051000123</span><br />
+          GSTIN: <span class="font-mono text-slate-600">09AAACF1234D1Z5</span>
+        </div>
+      </div>
+      <div>
+        <h4 class="font-bold text-slate-900 mb-3 text-sm">Noida Dark Store Hubs</h4>
+        <ul class="space-y-1.5 text-slate-500">
+          <li>JW-01: Noida Sector 18 (Atta Market)</li>
+          <li>JW-04: Noida Sector 62 (Electronic City)</li>
+          <li>JW-07: Noida Sector 137 (Expressway)</li>
+          <li>JW-09: Noida Sector 76 (Central Noida)</li>
+          <li>JW-12: Greater Noida West (Gaur City)</li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-bold text-slate-900 mb-3 text-sm">JaldiWala Platforms</h4>
+        <ul class="space-y-1.5 text-slate-500">
+          <li>Customer Web Portal (Next.js 15)</li>
+          <li>Customer Mobile App (React Native Expo)</li>
+          <li>Delivery Partner App (GPS Telematics)</li>
+          <li>Dark Store Operations Web (Picking/Packing)</li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-bold text-slate-900 mb-3 text-sm">Compliance & Trust</h4>
+        <ul class="space-y-1.5 text-slate-500">
+          <li>100% Owned Inventory & Cold Chain</li>
+          <li>Consumer Protection E-Commerce Rules 2020</li>
+          <li>DPDP Privacy Compliance</li>
+          <li>Razorpay Verified 256-bit SSL</li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const LOCATIONS = [
+      { id: 'sec-62', name: 'Noida Sector 62', sub: 'Electronic City, B-Block, Sector 62', eta: '8-10 mins', store: 'JaldiWala Hub #04' },
+      { id: 'sec-18', name: 'Noida Sector 18', sub: 'Atta Market, Wave Silver Tower', eta: '9-11 mins', store: 'JaldiWala Hub #01' },
+      { id: 'sec-137', name: 'Noida Sector 137', sub: 'Paras Tierea, Blossom County, Expressway', eta: '10-12 mins', store: 'JaldiWala Hub #07' },
+      { id: 'sec-76', name: 'Noida Sector 76', sub: 'Silicon City, Amrapali Silicon', eta: '10-12 mins', store: 'JaldiWala Hub #09' },
+      { id: 'gr-noida-w', name: 'Greater Noida West', sub: 'Gaur City 1 & 2, Char Murti', eta: '12-14 mins', store: 'JaldiWala Hub #12' },
+      { id: 'indirapuram', name: 'Indirapuram', sub: 'Vaibhav Khand, Shipra Mall Area', eta: '11-13 mins', store: 'JaldiWala Hub #06' },
+    ];
+
+    const CATEGORIES = [
+      { id: 'all', name: 'All Products', icon: '🛒' },
+      { id: 'dairy', name: 'Dairy & Eggs', icon: '🥛' },
+      { id: 'produce', name: 'Fruits & Veggies', icon: '🥬' },
+      { id: 'munchies', name: 'Munchies & Chips', icon: '🍿' },
+      { id: 'drinks', name: 'Cold Drinks', icon: '🥤' },
+      { id: 'instant', name: 'Instant Food', icon: '🍜' },
+      { id: 'staples', name: 'Atta & Dals', icon: '🌾' },
+      { id: 'sweets', name: 'Ice Creams', icon: '🍦' },
+    ];
+
+    const PRODUCTS = [
+      { id: 'p1', name: 'Amul Taaza Homogenised Toned Milk', category: 'dairy', weight: '500 ml pouch', mrp: 28, price: 27, discount: 4, eta: '8 mins', image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=500&auto=format&fit=crop&q=80', badge: 'FRESH TODAY' },
+      { id: 'p2', name: 'Farm Fresh Red Tomatoes (Hybrid)', category: 'produce', weight: '1 kg pack', mrp: 50, price: 36, discount: 28, eta: '9 mins', image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=500&auto=format&fit=crop&q=80', badge: 'MANDI FRESH' },
+      { id: 'p3', name: "Lay's India's Magic Masala Potato Chips", category: 'munchies', weight: '48 g pouch', mrp: 20, price: 20, discount: 0, eta: '8 mins', image: 'https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=500&auto=format&fit=crop&q=80' },
+      { id: 'p4', name: 'Coca-Cola Zero Sugar Refreshing Can', category: 'drinks', weight: '300 ml can', mrp: 40, price: 38, discount: 5, eta: '7 mins', image: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=80', badge: 'CHILLED 4°C' },
+      { id: 'p5', name: 'Maggi 2-Minute Masala Instant Noodles', category: 'instant', weight: '4 x 70 g pack', mrp: 60, price: 54, discount: 10, eta: '9 mins', image: 'https://images.unsplash.com/photo-1612927601601-6638404737ce?w=500&auto=format&fit=crop&q=80', badge: 'BESTSELLER' },
+      { id: 'p6', name: 'Aashirvaad Superior MP Shudh Chakki Atta', category: 'staples', weight: '5 kg bag', mrp: 295, price: 254, discount: 14, eta: '10 mins', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=500&auto=format&fit=crop&q=80' },
+      { id: 'p7', name: 'Britannia 100% Whole Wheat Brown Bread', category: 'dairy', weight: '400 g loaf', mrp: 50, price: 45, discount: 10, eta: '8 mins', image: 'https://images.unsplash.com/photo-1589367920969-ab8e050bbb04?w=500&auto=format&fit=crop&q=80' },
+      { id: 'p8', name: 'Nagpur Sweet Seedless Oranges', category: 'produce', weight: '1 kg (~5-6 pcs)', mrp: 130, price: 99, discount: 24, eta: '9 mins', image: 'https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?w=500&auto=format&fit=crop&q=80', badge: 'FARM DIRECT' },
+      { id: 'p9', name: "Haldiram's Nagpur Spicy Bhujia Sev", category: 'munchies', weight: '350 g pouch', mrp: 120, price: 104, discount: 13, eta: '8 mins', image: 'https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=500&auto=format&fit=crop&q=80' },
+      { id: 'p10', name: 'Kwality Walls Dark Chocolate Feast Bar', category: 'sweets', weight: '70 ml', mrp: 50, price: 45, discount: 10, eta: '9 mins', image: 'https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=500&auto=format&fit=crop&q=80', badge: 'COLD CHAIN -18°C' },
+      { id: 'p11', name: 'Fortune Sunlite Refined Sunflower Oil', category: 'staples', weight: '1 L pouch', mrp: 175, price: 148, discount: 15, eta: '10 mins', image: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=500&auto=format&fit=crop&q=80' },
+      { id: 'p12', name: 'Mother Dairy Classic Creamy Dahi Tub', category: 'dairy', weight: '400 g tub', mrp: 40, price: 36, discount: 10, eta: '8 mins', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=500&auto=format&fit=crop&q=80' },
+    ];
+
+    let currentLoc = LOCATIONS[0];
+    let currentCategory = 'all';
+    let searchQuery = '';
+    let cart = { 'p1': 2, 'p4': 1 };
+
+    function renderCategories() {
+      const container = document.getElementById('categoryContainer');
+      container.innerHTML = CATEGORIES.map(c => `
+        <button onclick="setCategory('${c.id}')" class="p-3 rounded-2xl flex flex-col items-center text-center transition-all duration-200 border ${
+          currentCategory === c.id ? 'bg-red-600 text-white border-red-600 shadow-md shadow-red-600/30 scale-105' : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-200/80 shadow-sm'
+        }">
+          <div class="text-2xl mb-1.5">${c.icon}</div>
+          <span class="text-[11px] font-bold line-clamp-2 leading-tight">${c.name}</span>
+        </button>
+      `).join('');
+    }
+
+    function renderProducts() {
+      const grid = document.getElementById('productsGrid');
+      const filtered = PRODUCTS.filter(p => {
+        const matchCat = currentCategory === 'all' || p.category === currentCategory;
+        const matchQuery = p.name.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchCat && matchQuery;
+      });
+
+      grid.innerHTML = filtered.map(p => {
+        const count = cart[p.id] || 0;
+        return `
+          <div class="bg-white rounded-3xl border border-slate-200/90 p-3 flex flex-col justify-between hover:shadow-[0_12px_24px_rgba(0,0,0,0.06)] hover:border-red-300 transition-all duration-200 group relative">
+            <div class="relative mb-2.5">
+              <div class="w-full h-36 rounded-2xl overflow-hidden bg-slate-50 relative">
+                <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+              <div class="absolute top-2 left-2 bg-white/95 backdrop-blur-sm px-2 py-0.5 rounded-lg text-[10px] font-black text-slate-800 shadow-sm">
+                ⚡ ${p.eta}
+              </div>
+              ${p.discount > 0 ? `<div class="absolute top-2 right-2 bg-emerald-600 text-white px-1.5 py-0.5 rounded-md text-[10px] font-black">${p.discount}% OFF</div>` : ''}
+              ${p.badge ? `<div class="absolute bottom-2 left-2 bg-gradient-to-r from-red-600 to-orange-600 text-white px-2 py-0.5 rounded text-[9px] font-black">${p.badge}</div>` : ''}
+            </div>
+            <div class="flex-1 flex flex-col justify-between">
+              <div>
+                <h3 class="text-xs sm:text-sm font-bold text-slate-900 line-clamp-2 leading-snug">${p.name}</h3>
+                <p class="text-[11px] text-slate-500 mt-1">${p.weight}</p>
+              </div>
+              <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+                <div>
+                  <div class="text-sm sm:text-base font-black text-slate-900">₹${p.price}</div>
+                  ${p.mrp > p.price ? `<div class="text-[10px] text-slate-400 line-through">₹${p.mrp}</div>` : ''}
+                </div>
+                ${count === 0 ? `
+                  <button onclick="addToCart('${p.id}')" class="px-4 py-1.5 rounded-xl border-2 border-red-600 bg-red-50 hover:bg-red-600 text-red-600 hover:text-white font-black text-xs transition-all active:scale-95 shadow-sm">
+                    ADD
+                  </button>
+                ` : `
+                  <div class="flex items-center gap-1.5 bg-red-600 text-white rounded-xl px-2 py-1 text-xs font-black shadow-md shadow-red-600/30">
+                    <button onclick="removeFromCart('${p.id}')" class="w-5 h-5 flex items-center justify-center font-bold">－</button>
+                    <span class="w-4 text-center">${count}</span>
+                    <button onclick="addToCart('${p.id}')" class="w-5 h-5 flex items-center justify-center font-bold">＋</button>
+                  </div>
+                `}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function addToCart(id) {
+      cart[id] = (cart[id] || 0) + 1;
+      updateUI();
+    }
+
+    function removeFromCart(id) {
+      if (!cart[id]) return;
+      if (cart[id] <= 1) delete cart[id];
+      else cart[id]--;
+      updateUI();
+    }
+
+    function updateUI() {
+      let count = 0;
+      let subtotal = 0;
+      Object.entries(cart).forEach(([id, q]) => {
+        count += q;
+        const p = PRODUCTS.find(x => x.id === id);
+        if (p) subtotal += p.price * q;
+      });
+
+      const delivery = subtotal >= 199 || subtotal === 0 ? 0 : 15;
+      const handling = subtotal > 0 ? 4 : 0;
+      const discount = subtotal >= 199 ? Math.min(100, Math.floor(subtotal * 0.2)) : 0;
+      const total = Math.max(0, subtotal + delivery + handling - discount);
+      const toFree = Math.max(0, 199 - subtotal);
+
+      document.getElementById('headerCartBadge').textContent = `${count} • ₹${total}`;
+      document.getElementById('cartTitle').textContent = `My Basket (${count} items)`;
+
+      renderProducts();
+      renderCart(subtotal, delivery, handling, discount, total, toFree);
+    }
+
+    function renderCart(subtotal, delivery, handling, discount, total, toFree) {
+      const itemsList = document.getElementById('cartItemsList');
+      const meter = document.getElementById('cartFreeDeliveryMeter');
+      const summary = document.getElementById('cartSummary');
+
+      const items = Object.entries(cart);
+      if (items.length === 0) {
+        meter.innerHTML = '';
+        itemsList.innerHTML = `
+          <div class="h-full flex flex-col items-center justify-center text-center p-6 text-slate-400">
+            <span class="text-4xl mb-2">🛒</span>
+            <p class="text-base font-bold text-slate-800">Your basket is empty</p>
+            <p class="text-xs text-slate-400 mt-1">Add milk, bread or snacks to begin.</p>
+          </div>
+        `;
+        summary.innerHTML = '';
+        return;
+      }
+
+      meter.innerHTML = toFree > 0 ? `
+        <div class="flex justify-between text-slate-700 font-semibold mb-1">
+          <span>Add ₹${toFree} more for <strong>FREE Delivery</strong></span>
+          <span class="text-red-600">₹${subtotal} / ₹199</span>
+        </div>
+        <div class="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden">
+          <div class="bg-red-600 h-full rounded-full" style="width: ${Math.min(100, (subtotal / 199) * 100)}%"></div>
+        </div>
+      ` : `
+        <div class="text-emerald-700 font-bold flex items-center gap-1.5">
+          ✓ Yay! You've unlocked FREE Delivery on this order
+        </div>
+      `;
+
+      itemsList.innerHTML = items.map(([id, q]) => {
+        const p = PRODUCTS.find(x => x.id === id);
+        return `
+          <div class="flex items-center justify-between gap-3 p-3 rounded-2xl border border-slate-100 bg-slate-50/60">
+            <img src="${p.image}" class="w-12 h-12 rounded-xl object-cover">
+            <div class="flex-1 min-w-0">
+              <h4 class="text-xs font-bold text-slate-900 truncate">${p.name}</h4>
+              <p class="text-[10px] text-slate-500">${p.weight}</p>
+              <p class="text-xs font-black text-slate-900 mt-0.5">₹${p.price * q}</p>
+            </div>
+            <div class="flex items-center gap-1.5 bg-white border border-slate-200 rounded-xl px-2 py-1 text-xs font-black shadow-sm">
+              <button onclick="removeFromCart('${id}')" class="w-5 h-5 flex items-center justify-center font-bold">－</button>
+              <span class="w-4 text-center text-red-600">${q}</span>
+              <button onclick="addToCart('${id}')" class="w-5 h-5 flex items-center justify-center font-bold">＋</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      summary.innerHTML = `
+        <div class="space-y-1.5 text-xs text-slate-600">
+          <div class="flex justify-between"><span>Items Total</span><span class="font-semibold text-slate-900">₹${subtotal}</span></div>
+          <div class="flex justify-between"><span>Delivery Fee</span><span class="font-semibold text-emerald-600">${delivery === 0 ? 'FREE' : '₹' + delivery}</span></div>
+          <div class="flex justify-between"><span>Handling Fee</span><span class="font-semibold text-slate-900">₹${handling}</span></div>
+          ${discount > 0 ? `<div class="flex justify-between text-red-600 font-bold"><span>Promo (JALDI100)</span><span>-₹${discount}</span></div>` : ''}
+          <div class="border-t border-slate-200 pt-2 flex justify-between font-black text-base text-slate-900">
+            <span>To Pay</span><span class="text-red-600">₹${total}</span>
+          </div>
+        </div>
+        <button onclick="handleCheckout()" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-orange-600 hover:from-red-700 text-white font-black text-sm shadow-lg shadow-red-600/30 flex items-center justify-center gap-2 active:scale-95 transition-all">
+          <span>Place Order • ₹${total}</span> ➔
+        </button>
+      `;
+    }
+
+    function toggleCart(show) {
+      document.getElementById('cartDrawer').classList.toggle('hidden', !show);
+    }
+
+    function toggleLocModal(show) {
+      document.getElementById('locModal').classList.toggle('hidden', !show);
+    }
+
+    function toggleOrderModal(show) {
+      document.getElementById('orderModal').classList.toggle('hidden', !show);
+    }
+
+    function handleCheckout() {
+      toggleCart(false);
+      toggleOrderModal(true);
+    }
+
+    function setCategory(id) {
+      currentCategory = id;
+      document.getElementById('shelfTitle').textContent = CATEGORIES.find(c => c.id === id)?.name || 'Trending in Noida Today';
+      renderCategories();
+      renderProducts();
+    }
+
+    function handleSearch(val) {
+      searchQuery = val;
+      renderProducts();
+    }
+
+    function selectLoc(loc) {
+      currentLoc = loc;
+      document.getElementById('headerLocName').textContent = loc.name;
+      document.getElementById('headerEtaPill').textContent = `⚡ ${loc.eta}`;
+      document.getElementById('heroStoreHub').textContent = loc.store;
+      toggleLocModal(false);
+    }
+
+    function renderLocations() {
+      const container = document.getElementById('locListContainer');
+      container.innerHTML = LOCATIONS.map(l => `
+        <button onclick='selectLoc(${JSON.stringify(l)})' class="w-full text-left p-3.5 rounded-2xl border border-slate-200 hover:border-red-400 hover:bg-slate-50 transition-all flex items-center justify-between">
+          <div>
+            <div class="font-black text-sm text-slate-900">${l.name}</div>
+            <p class="text-xs text-slate-500 mt-0.5">${l.sub}</p>
+          </div>
+          <span class="px-2.5 py-1 rounded-xl bg-emerald-100 text-emerald-800 text-xs font-black">⚡ ${l.eta}</span>
+        </button>
+      `).join('');
+    }
+
+    // Init
+    renderLocations();
+    renderCategories();
+    updateUI();
+  </script>
+</body>
+</html>

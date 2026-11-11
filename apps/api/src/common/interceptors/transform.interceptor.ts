@@ -17,18 +17,33 @@ export interface Response<T> {
 }
 
 @Injectable()
-export class TransformInterceptor<T> implements NestInterceptor<T, Response<T>> {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<Response<T>> {
+export class TransformInterceptor<T> implements NestInterceptor<T, any> {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const startTime = Date.now();
+    const http = context.switchToHttp();
+    const res = http.getResponse();
+
     return next.handle().pipe(
-      map((data) => ({
-        success: true,
-        data,
-        meta: {
-          timestamp: new Date().toISOString(),
-          durationMs: Date.now() - startTime,
-        },
-      })),
+      map((data) => {
+        // If data is already an HTML document or raw buffer, don't wrap in JSON
+        if (
+          typeof data === 'string' &&
+          (data.trim().startsWith('<!DOCTYPE html>') ||
+            data.trim().startsWith('<html') ||
+            res.getHeader('content-type')?.toString().includes('text/html'))
+        ) {
+          return data;
+        }
+
+        return {
+          success: true,
+          data,
+          meta: {
+            timestamp: new Date().toISOString(),
+            durationMs: Date.now() - startTime,
+          },
+        };
+      }),
     );
   }
 }
