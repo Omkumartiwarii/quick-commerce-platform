@@ -1,0 +1,35 @@
+services:
+  # JaldiWala Core API (NestJS + Swagger + Order Engine)
+  - type: web
+    name: jaldiwala-api
+    runtime: node
+    plan: free
+    region: singapore
+    rootDir: apps/api
+    buildCommand: pnpm run build
+    startCommand: pnpm run start:prod
+    healthCheckPath: /v1/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: SMS_MOCK_MODE
+        value: "true"
+
+  # JaldiWala Customer Web App (Next.js 15 + Tailwind)
+  - type: web
+    name: jaldiwala-web
+    runtime: node
+    plan: free
+    region: singapore
+    rootDir: apps/customer-web
+    buildCommand: pnpm run build
+    startCommand: pnpm run start
+    envVars:
+      - key: NODE_ENV
+        value: production

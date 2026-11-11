@@ -41,9 +41,9 @@ async function bootstrap() {
   SwaggerModule.setup('docs', app, document);
 
   const port = process.env.PORT || 4000;
-  await app.listen(port);
-  logger.log(`⚡ Quick Commerce Core API running on: http://localhost:${port}/v1`);
-  logger.log(`📚 Swagger OpenAPI Documentation available on: http://localhost:${port}/docs`);
+  await app.listen(port, '0.0.0.0');
+  logger.log(`⚡ Quick Commerce Core API running on: http://0.0.0.0:${port}/v1`);
+  logger.log(`📚 Swagger OpenAPI Documentation available on: http://0.0.0.0:${port}/docs`);
 }
 
 bootstrap();

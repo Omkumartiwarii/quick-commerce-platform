@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "nest build",
+    "build:deps": "pnpm --prefix ../../packages/shared-types build && pnpm --prefix ../../packages/shared-validation build",
+    "prebuild": "pnpm run build:deps && prisma generate",
+    "build": "pnpm run build:deps && prisma generate && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "dev": "nest start --watch",

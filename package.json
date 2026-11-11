@@ -10,6 +10,10 @@
   },
   "scripts": {
     "build": "turbo run build",
+    "build:api": "pnpm --filter @qc/shared-types build && pnpm --filter @qc/shared-validation build && pnpm --filter @qc/api build",
+    "build:web": "pnpm --filter @qc/customer-web build",
+    "start:api": "pnpm --filter @qc/api start:prod",
+    "start:web": "pnpm --filter @qc/customer-web start",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "test": "turbo run test",
