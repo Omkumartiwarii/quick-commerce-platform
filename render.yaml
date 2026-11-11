@@ -20,6 +20,8 @@ services:
         generateValue: true
       - key: SMS_MOCK_MODE
         value: "true"
+      - key: SKIP_DB
+        value: "true"
 
   # JaldiWala Customer Web App (Next.js 15 + Tailwind)
   - type: web
