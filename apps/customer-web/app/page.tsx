@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import Image from 'next/image';
 import {
   MapPin,
   Search,
@@ -13,11 +12,14 @@ import {
   X,
   Plus,
   Minus,
-  Sparkles,
   ArrowRight,
   Award,
   Truck,
-  Percent
+  Percent,
+  Sparkles,
+  Phone,
+  Tag,
+  Check
 } from 'lucide-react';
 
 interface Product {
@@ -34,23 +36,23 @@ interface Product {
 }
 
 const NOIDA_LOCATIONS = [
-  { id: 'sec-62', name: 'Noida Sector 62 (Electronic City)', zone: 'Central Noida', eta: '9 mins', store: 'JW-MFC-04 Sec 62' },
-  { id: 'sec-18', name: 'Noida Sector 18 (Atta Market)', zone: 'South Noida', eta: '11 mins', store: 'JW-MFC-01 Sec 18' },
-  { id: 'sec-137', name: 'Noida Sector 137 (Expressway)', zone: 'Expressway', eta: '10 mins', store: 'JW-MFC-07 Sec 137' },
-  { id: 'sec-76', name: 'Noida Sector 76 (Central Noida)', zone: 'East Noida', eta: '12 mins', store: 'JW-MFC-09 Sec 76' },
-  { id: 'gr-noida-w', name: 'Greater Noida West (Gaur City)', zone: 'Noida Extension', eta: '14 mins', store: 'JW-MFC-12 Gaur City' },
-  { id: 'indirapuram', name: 'Ghaziabad / Indirapuram', zone: 'NCR Border', eta: '13 mins', store: 'JW-MFC-06 Indirapuram' },
+  { id: 'sec-62', name: 'Noida Sector 62', sub: 'Electronic City, B-Block, Sector 62', eta: '8-10 mins', store: 'JaldiWala Hub #04' },
+  { id: 'sec-18', name: 'Noida Sector 18', sub: 'Atta Market, Wave Silver Tower', eta: '9-11 mins', store: 'JaldiWala Hub #01' },
+  { id: 'sec-137', name: 'Noida Sector 137', sub: 'Paras Tierea, Blossom County, Expressway', eta: '10-12 mins', store: 'JaldiWala Hub #07' },
+  { id: 'sec-76', name: 'Noida Sector 76', sub: 'Silicon City, Amrapali Silicon', eta: '10-12 mins', store: 'JaldiWala Hub #09' },
+  { id: 'gr-noida-w', name: 'Greater Noida West', sub: 'Gaur City 1 & 2, Char Murti', eta: '12-14 mins', store: 'JaldiWala Hub #12' },
+  { id: 'indirapuram', name: 'Indirapuram', sub: 'Vaibhav Khand, Shipra Mall Area', eta: '11-13 mins', store: 'JaldiWala Hub #06' },
 ];
 
 const CATEGORIES = [
-  { id: 'all', name: 'Sabhi Items', icon: '🛍️' },
-  { id: 'dairy', name: 'Doodh, Dahi & Eggs', icon: '🥛' },
-  { id: 'produce', name: 'Taaza Phal & Sabziyan', icon: '🥬' },
-  { id: 'munchies', name: 'Namkeen & Chips', icon: '🍿' },
-  { id: 'drinks', name: 'Cold Drinks & Juices', icon: '🥤' },
-  { id: 'instant', name: 'Maggi & Instant Food', icon: '🍜' },
-  { id: 'staples', name: 'Atta, Chawal & Tel', icon: '🌾' },
-  { id: 'sweets', name: 'Ice Creams & Meetha', icon: '🍦' },
+  { id: 'all', name: 'All Products', icon: '🛒', bg: 'from-amber-50 to-orange-50 border-orange-200' },
+  { id: 'dairy', name: 'Dairy, Bread & Eggs', icon: '🥛', bg: 'from-blue-50 to-indigo-50 border-blue-200' },
+  { id: 'produce', name: 'Fresh Fruits & Veggies', icon: '🥬', bg: 'from-emerald-50 to-green-50 border-emerald-200' },
+  { id: 'munchies', name: 'Munchies & Chips', icon: '🍿', bg: 'from-yellow-50 to-amber-50 border-yellow-200' },
+  { id: 'drinks', name: 'Cold Drinks & Juices', icon: '🥤', bg: 'from-cyan-50 to-sky-50 border-cyan-200' },
+  { id: 'instant', name: 'Maggi & Instant Food', icon: '🍜', bg: 'from-rose-50 to-pink-50 border-rose-200' },
+  { id: 'staples', name: 'Atta, Rice & Dals', icon: '🌾', bg: 'from-orange-50 to-amber-50 border-orange-200' },
+  { id: 'sweets', name: 'Ice Creams & Sweets', icon: '🍦', bg: 'from-purple-50 to-fuchsia-50 border-purple-200' },
 ];
 
 const PRODUCTS: Product[] = [
@@ -63,20 +65,20 @@ const PRODUCTS: Product[] = [
     price: 27,
     discount: 4,
     eta: '8 mins',
-    image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=500&auto=format&fit=crop&q=60',
-    badge: 'AAJ KA TAAZA',
+    image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=500&auto=format&fit=crop&q=80',
+    badge: 'FRESH TODAY',
   },
   {
     id: 'prod-2',
-    name: 'Farm Fresh Laal Tamatar (Hybrid)',
+    name: 'Farm Fresh Red Tomatoes (Hybrid)',
     category: 'produce',
     weight: '1 kg pack',
     mrp: 50,
     price: 36,
     discount: 28,
     eta: '9 mins',
-    image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=500&auto=format&fit=crop&q=60',
-    badge: 'MANDI SE SEEDHA',
+    image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=500&auto=format&fit=crop&q=80',
+    badge: 'MANDI FRESH',
   },
   {
     id: 'prod-3',
@@ -87,18 +89,18 @@ const PRODUCTS: Product[] = [
     price: 20,
     discount: 0,
     eta: '8 mins',
-    image: 'https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=500&auto=format&fit=crop&q=60',
+    image: 'https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=500&auto=format&fit=crop&q=80',
   },
   {
     id: 'prod-4',
-    name: 'Coca-Cola Zero Sugar Refreshing Can',
+    name: 'Coca-Cola Zero Sugar Can',
     category: 'drinks',
     weight: '300 ml can',
     mrp: 40,
     price: 38,
     discount: 5,
     eta: '7 mins',
-    image: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60',
+    image: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=80',
     badge: 'CHILLED 4°C',
   },
   {
@@ -110,7 +112,7 @@ const PRODUCTS: Product[] = [
     price: 54,
     discount: 10,
     eta: '9 mins',
-    image: 'https://images.unsplash.com/photo-1612927601601-6638404737ce?w=500&auto=format&fit=crop&q=60',
+    image: 'https://images.unsplash.com/photo-1612927601601-6638404737ce?w=500&auto=format&fit=crop&q=80',
     badge: 'BESTSELLER',
   },
   {
@@ -122,7 +124,7 @@ const PRODUCTS: Product[] = [
     price: 254,
     discount: 14,
     eta: '10 mins',
-    image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=500&auto=format&fit=crop&q=60',
+    image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=500&auto=format&fit=crop&q=80',
   },
   {
     id: 'prod-7',
@@ -133,30 +135,30 @@ const PRODUCTS: Product[] = [
     price: 45,
     discount: 10,
     eta: '8 mins',
-    image: 'https://images.unsplash.com/photo-1589367920969-ab8e050bbb04?w=500&auto=format&fit=crop&q=60',
+    image: 'https://images.unsplash.com/photo-1589367920969-ab8e050bbb04?w=500&auto=format&fit=crop&q=80',
   },
   {
     id: 'prod-8',
-    name: 'Nagpur Raseele Meethe Santre (Oranges)',
+    name: 'Nagpur Sweet Seedless Oranges',
     category: 'produce',
     weight: '1 kg (~5-6 pcs)',
     mrp: 130,
     price: 99,
     discount: 24,
     eta: '9 mins',
-    image: 'https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?w=500&auto=format&fit=crop&q=60',
-    badge: 'FARM FRESH',
+    image: 'https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?w=500&auto=format&fit=crop&q=80',
+    badge: 'FARM DIRECT',
   },
   {
     id: 'prod-9',
-    name: "Haldiram's Nagpur Chatpati Bhujia Sev",
+    name: "Haldiram's Nagpur Spicy Bhujia Sev",
     category: 'munchies',
     weight: '350 g pouch',
     mrp: 120,
     price: 104,
     discount: 13,
     eta: '8 mins',
-    image: 'https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=500&auto=format&fit=crop&q=60',
+    image: 'https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=500&auto=format&fit=crop&q=80',
   },
   {
     id: 'prod-10',
@@ -167,7 +169,7 @@ const PRODUCTS: Product[] = [
     price: 45,
     discount: 10,
     eta: '9 mins',
-    image: 'https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=500&auto=format&fit=crop&q=60',
+    image: 'https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=500&auto=format&fit=crop&q=80',
     badge: 'COLD CHAIN -18°C',
   },
   {
@@ -179,24 +181,24 @@ const PRODUCTS: Product[] = [
     price: 148,
     discount: 15,
     eta: '10 mins',
-    image: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=500&auto=format&fit=crop&q=60',
+    image: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=500&auto=format&fit=crop&q=80',
   },
   {
     id: 'prod-12',
-    name: 'Mother Dairy Classic Meetha & Creamy Dahi',
+    name: 'Mother Dairy Classic Creamy Dahi Tub',
     category: 'dairy',
     weight: '400 g tub',
     mrp: 40,
     price: 36,
     discount: 10,
     eta: '8 mins',
-    image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=500&auto=format&fit=crop&q=60',
+    image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=500&auto=format&fit=crop&q=80',
   },
 ];
 
 export default function LandingPage() {
   const [selectedLocation, setSelectedLocation] = useState(NOIDA_LOCATIONS[0]);
-  const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
+  const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [cart, setCart] = useState<Record<string, number>>({ 'prod-1': 2, 'prod-4': 1 });
@@ -240,10 +242,12 @@ export default function LandingPage() {
       }
     });
 
-    const deliveryFee = subtotal >= 199 || subtotal === 0 ? 0 : 15;
+    const freeDeliveryThreshold = 199;
+    const deliveryFee = subtotal >= freeDeliveryThreshold || subtotal === 0 ? 0 : 15;
     const handlingFee = subtotal > 0 ? 4 : 0;
-    const promoDiscount = couponApplied && subtotal >= 199 ? Math.min(100, Math.floor(subtotal * 0.2)) : 0;
+    const promoDiscount = couponApplied && subtotal >= freeDeliveryThreshold ? Math.min(100, Math.floor(subtotal * 0.2)) : 0;
     const finalTotal = Math.max(0, subtotal + deliveryFee + handlingFee - promoDiscount);
+    const amountToFreeDelivery = Math.max(0, freeDeliveryThreshold - subtotal);
 
     return {
       subtotal,
@@ -252,6 +256,7 @@ export default function LandingPage() {
       handlingFee,
       promoDiscount,
       finalTotal,
+      amountToFreeDelivery,
     };
   }, [cart, couponApplied]);
 
@@ -270,135 +275,94 @@ export default function LandingPage() {
     setIsOrderModalOpen(true);
     setOrderStep(1);
 
-    setTimeout(() => setOrderStep(2), 2000);
-    setTimeout(() => setOrderStep(3), 4500);
-    setTimeout(() => setOrderStep(4), 7000);
+    setTimeout(() => setOrderStep(2), 2200);
+    setTimeout(() => setOrderStep(3), 4800);
+    setTimeout(() => setOrderStep(4), 7200);
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 pb-20 selection:bg-red-600 selection:text-white">
-      {/* 1. TOP LIVE OPS STRIP */}
-      <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 text-white text-xs py-2 px-4 border-b border-indigo-900/40">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+    <div className="min-h-screen bg-[#F7F8FA] text-slate-900 pb-20 antialiased selection:bg-red-600 selection:text-white">
+      {/* 1. TOP ANNOUNCEMENT BAR */}
+      <div className="bg-gradient-to-r from-red-600 via-rose-600 to-indigo-950 text-white text-xs py-2 px-4 shadow-sm">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 font-medium">
+          <div className="flex items-center gap-2 truncate">
+            <span className="bg-white/20 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider">
+              Launch Offer
             </span>
-            <span className="font-bold text-red-500 tracking-wide">JALDIWALA NOIDA LIVE:</span>
-            <span>Own-Inventory Dark Stores Active in Sectors 62, 18, 137 & Indirapuram.</span>
+            <span className="truncate">
+              Flat <strong>₹100 OFF</strong> on your first order with code{' '}
+              <span className="font-mono bg-white text-red-600 px-1.5 py-0.5 rounded font-black">
+                JALDI100
+              </span>{' '}
+              • Free delivery above ₹199!
+            </span>
           </div>
-          <div className="hidden md:flex items-center gap-4 text-slate-300">
+          <div className="hidden md:flex items-center gap-4 text-xs shrink-0 text-white/90">
             <span className="flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-indigo-400" />
-              100% Apna Inventory
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-300" />
+              100% Owned Inventory
             </span>
             <span>•</span>
             <span className="flex items-center gap-1">
-              <Award className="w-3.5 h-3.5 text-amber-400" />
-              FSSAI Lic. #10022051000123
+              <Award className="w-3.5 h-3.5 text-amber-300" />
+              FSSAI Certified Cold Chain
             </span>
-            <span>•</span>
-            <span className="text-orange-400 font-bold">Cold Chain (0-4°C) Verified</span>
           </div>
         </div>
       </div>
 
-      {/* 2. STICKY HEADER WITH OFFICIAL JALDIWALA LOGO */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-6">
-            {/* JaldiWala Brand Logo */}
-            <div className="flex items-center gap-3 cursor-pointer group">
-              <div className="relative w-12 h-12 shrink-0 group-hover:scale-105 transition-transform">
-                <img
-                  src="/logo.png"
-                  alt="JaldiWala"
-                  className="w-full h-full object-contain"
-                />
-              </div>
-              <div className="leading-tight">
-                <div className="flex items-baseline text-2xl font-black tracking-tight">
-                  <span className="text-red-600">Jaldi</span>
-                  <span className="text-indigo-950 ml-0.5">Wala</span>
-                </div>
-                <span className="block text-[10px] font-black tracking-widest text-orange-600 uppercase -mt-0.5">
-                  10-MIN MEIN DELIVERY
-                </span>
-              </div>
+      {/* 2. MAIN HEADER */}
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4 lg:gap-8">
+          {/* Logo & Location */}
+          <div className="flex items-center gap-5 shrink-0">
+            {/* Official JaldiWala Logo */}
+            <div className="cursor-pointer group flex items-center" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+              <img
+                src="/logo.png"
+                alt="JaldiWala - 10-Minute Grocery Delivery"
+                className="h-12 md:h-14 w-auto object-contain transition-transform group-hover:scale-105"
+              />
             </div>
 
-            {/* Location Selector */}
-            <div className="relative hidden lg:block">
-              <button
-                onClick={() => setIsLocationDropdownOpen(!isLocationDropdownOpen)}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200/70 border border-slate-200 transition-colors text-left"
-              >
-                <MapPin className="w-4 h-4 text-red-600 shrink-0" />
-                <div className="max-w-[200px]">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-bold text-slate-900 truncate">
-                      {selectedLocation.name.split('(')[0]}
-                    </span>
-                    <span className="px-1.5 py-0.5 rounded text-[10px] font-black bg-red-100 text-red-700">
-                      ⚡ {selectedLocation.eta}
-                    </span>
-                  </div>
-                  <p className="text-[11px] text-slate-500 truncate">{selectedLocation.zone} • {selectedLocation.store}</p>
+            {/* Location Selector Pill */}
+            <button
+              onClick={() => setIsLocationModalOpen(true)}
+              className="hidden sm:flex items-center gap-2.5 px-3 py-1.5 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-all text-left"
+            >
+              <div className="w-7 h-7 rounded-xl bg-red-100 flex items-center justify-center text-red-600 shrink-0">
+                <MapPin className="w-4 h-4" />
+              </div>
+              <div className="max-w-[170px] lg:max-w-[210px]">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Delivery in</span>
+                  <span className="px-1.5 py-0.2 rounded text-[10px] font-black bg-emerald-100 text-emerald-800">
+                    ⚡ {selectedLocation.eta}
+                  </span>
                 </div>
-                <ChevronDown className="w-3.5 h-3.5 text-slate-400 ml-1" />
-              </button>
-
-              {isLocationDropdownOpen && (
-                <div className="absolute left-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-slate-100 p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                  <div className="px-3 py-2 border-b border-slate-100 mb-1">
-                    <p className="text-xs font-bold text-slate-800">Select Noida Delivery Zone</p>
-                    <p className="text-[11px] text-slate-500">Nearest JaldiWala Dark Store mapped</p>
-                  </div>
-                  <div className="max-h-64 overflow-y-auto space-y-1">
-                    {NOIDA_LOCATIONS.map((loc) => (
-                      <button
-                        key={loc.id}
-                        onClick={() => {
-                          setSelectedLocation(loc);
-                          setIsLocationDropdownOpen(false);
-                        }}
-                        className={`w-full text-left px-3 py-2 rounded-xl text-xs flex items-center justify-between transition-colors ${
-                          selectedLocation.id === loc.id
-                            ? 'bg-red-50 text-red-700 font-bold border border-red-200'
-                            : 'hover:bg-slate-50 text-slate-700'
-                        }`}
-                      >
-                        <div>
-                          <div className="font-semibold">{loc.name}</div>
-                          <div className="text-[11px] text-slate-400">{loc.store}</div>
-                        </div>
-                        <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-black">
-                          {loc.eta}
-                        </span>
-                      </button>
-                    ))}
-                  </div>
+                <div className="flex items-center gap-1">
+                  <span className="text-xs font-black text-slate-900 truncate">{selectedLocation.name}</span>
+                  <ChevronDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                 </div>
-              )}
-            </div>
+              </div>
+            </button>
           </div>
 
           {/* Search Bar */}
-          <div className="flex-1 max-w-xl mx-2">
+          <div className="flex-1 max-w-2xl">
             <div className="relative">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder='Khojein "Doodh", "Atta", "Tamatar", "Chips", "Coke Zero", "Maggi"...'
+                placeholder='Search "milk", "atta", "chips", "coke zero", "tomatoes"...'
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-slate-100 hover:bg-slate-100/80 focus:bg-white text-xs md:text-sm pl-10 pr-4 py-2.5 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all shadow-inner"
+                className="w-full bg-slate-100/90 hover:bg-slate-100 focus:bg-white text-xs md:text-sm pl-11 pr-10 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all shadow-inner"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -406,193 +370,150 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Cart CTA */}
-          <div className="flex items-center gap-3">
+          {/* Actions */}
+          <div className="flex items-center gap-3 shrink-0">
             <button
               onClick={() => setIsCartOpen(true)}
-              className="relative flex items-center gap-2 bg-gradient-to-r from-red-600 via-rose-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white px-4 py-2.5 rounded-2xl font-bold text-xs md:text-sm shadow-md shadow-red-600/30 hover:shadow-lg transition-all active:scale-95"
+              className="flex items-center gap-2.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white px-4 py-2.5 rounded-2xl font-black text-xs md:text-sm shadow-md shadow-red-600/25 hover:shadow-lg transition-all active:scale-95"
             >
               <ShoppingBag className="w-4 h-4" />
-              <span className="hidden sm:inline">Meri Basket</span>
-              {totalCartCount > 0 && (
-                <span className="flex items-center justify-center bg-white text-red-600 text-xs font-black px-1.5 py-0.5 rounded-full ml-1 min-w-[20px]">
-                  {totalCartCount}
+              <span className="hidden sm:inline">My Basket</span>
+              {totalCartCount > 0 ? (
+                <span className="bg-white text-red-600 text-xs font-black px-2 py-0.5 rounded-full">
+                  {totalCartCount} • ₹{cartCalculations.finalTotal}
                 </span>
-              )}
-              {cartCalculations.subtotal > 0 && (
-                <span className="hidden md:inline border-l border-red-400/40 pl-2">
-                  ₹{cartCalculations.finalTotal}
-                </span>
+              ) : (
+                <span className="text-xs opacity-90">Empty</span>
               )}
             </button>
           </div>
         </div>
       </header>
 
-      {/* 3. HERO & PROMO BANNER */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-indigo-950 via-slate-900 to-slate-950 text-white py-12 px-4">
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-red-600/15 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-orange-500/15 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
-          <div className="lg:col-span-7 space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-500/20 border border-red-500/40 text-red-300 text-xs font-semibold backdrop-blur-sm">
-              <Sparkles className="w-3.5 h-3.5 text-orange-400" />
-              <span>JaldiWala: Har Roz 10 Minute Me Delivery!</span>
-            </div>
-
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1]">
-              Rozmarra Ki Grocery, Seedha{' '}
-              <span className="bg-gradient-to-r from-red-500 via-orange-400 to-amber-300 bg-clip-text text-transparent">
-                10 Minute Mein.
+      {/* 3. HERO PROMOTIONAL BANNER */}
+      <section className="max-w-7xl mx-auto px-4 pt-6 pb-2">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Main Hero Card */}
+          <div className="md:col-span-2 relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-950 via-slate-900 to-red-950 text-white p-6 sm:p-8 flex flex-col justify-between shadow-lg">
+            <div className="absolute top-0 right-0 w-80 h-80 bg-red-600/20 rounded-full blur-3xl pointer-events-none" />
+            <div className="relative z-10 space-y-3 max-w-lg">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-600 text-white text-[11px] font-black uppercase tracking-wider shadow-sm">
+                <Sparkles className="w-3.5 h-3.5" />
+                Guaranteed 10-Minute Delivery
               </span>
-            </h1>
-
-            <p className="text-sm sm:text-base text-slate-300 max-w-xl leading-relaxed">
-              No middleman, no marketplace delay. <strong>JaldiWala</strong> owns its dark stores, employs dedicated EV delivery partners, and guarantees 100% in-stock availability across Noida.
-            </p>
-
-            {/* Quick Metrics */}
-            <div className="grid grid-cols-3 gap-3 pt-2 max-w-lg">
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-3 backdrop-blur-sm">
-                <div className="text-xl sm:text-2xl font-black text-red-400">8.4 mins</div>
-                <div className="text-[11px] text-slate-400">Avg Noida Delivery Time</div>
-              </div>
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-3 backdrop-blur-sm">
-                <div className="text-xl sm:text-2xl font-black text-emerald-400">7,500+</div>
-                <div className="text-[11px] text-slate-400">Verified SKUs In Stock</div>
-              </div>
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-3 backdrop-blur-sm">
-                <div className="text-xl sm:text-2xl font-black text-amber-400">0%</div>
-                <div className="text-[11px] text-slate-400">Out-of-Stock Cancellations</div>
-              </div>
+              <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight">
+                Daily Essentials & Groceries, <br className="hidden sm:inline" />
+                Delivered in <span className="text-red-400 underline decoration-wavy decoration-orange-400">10 Minutes!</span>
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Direct from mandi & certified FMCG brands. Stored in temperature-controlled dark stores across Noida.
+              </p>
             </div>
 
-            {/* Promo Coupon */}
-            <div className="flex flex-wrap items-center gap-3 bg-gradient-to-r from-red-950/80 via-slate-900 to-indigo-950/80 border border-red-500/40 p-3 rounded-2xl max-w-lg">
-              <div className="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center text-red-400">
-                <Percent className="w-5 h-5" />
+            <div className="relative z-10 pt-6 flex flex-wrap items-center gap-3">
+              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-white/15 text-xs">
+                <Truck className="w-4 h-4 text-orange-400" />
+                <span>Dedicated EV Delivery Fleet</span>
               </div>
-              <div className="flex-1">
-                <p className="text-xs font-bold text-white">Use Coupon: <span className="font-mono text-orange-300 font-black">JALDI100</span></p>
-                <p className="text-[11px] text-slate-300">Get ₹100 Flat OFF on your first 3 orders above ₹199</p>
+              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-white/15 text-xs">
+                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                <span>100% Owned Inventory</span>
               </div>
-              <button
-                onClick={() => setCouponApplied(true)}
-                className="px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-bold transition-all shadow"
-              >
-                {couponApplied ? 'Applied ✓' : 'Apply'}
-              </button>
             </div>
           </div>
 
-          {/* JaldiWala Dark Store Live Telematics Card */}
-          <div className="lg:col-span-5">
-            <div className="bg-gradient-to-b from-slate-900/90 to-indigo-950/90 border border-slate-700/60 rounded-3xl p-6 shadow-2xl backdrop-blur-md relative overflow-hidden">
-              <div className="flex items-center justify-between border-b border-slate-700/60 pb-4 mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-orange-500/20 border border-orange-500/30 flex items-center justify-center text-orange-400">
-                    <Truck className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-sm text-white">JaldiWala Dark Store #04</h3>
-                    <p className="text-xs text-slate-400">Noida Sector 62 (Electronic City)</p>
-                  </div>
-                </div>
-                <span className="px-2.5 py-1 rounded-full text-xs font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                  ONLINE
-                </span>
-              </div>
+          {/* Side Promo Card */}
+          <div className="rounded-3xl bg-gradient-to-br from-amber-500 to-orange-600 text-white p-6 flex flex-col justify-between shadow-lg relative overflow-hidden">
+            <div className="space-y-2">
+              <span className="bg-black/20 text-white text-[10px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
+                Noida Special
+              </span>
+              <h3 className="text-xl font-black leading-tight">
+                Get ₹100 Flat OFF on Orders Above ₹199
+              </h3>
+              <p className="text-xs text-amber-100">
+                Use code <strong className="font-mono bg-white text-orange-600 px-1.5 py-0.5 rounded">JALDI100</strong> at checkout!
+              </p>
+            </div>
 
-              <div className="space-y-3 text-xs">
-                <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-800/60 border border-slate-700/40">
-                  <span className="text-slate-400">Active Delivery Fleet</span>
-                  <span className="font-bold text-white">18 Dedicated EV Riders</span>
+            <div className="pt-4">
+              <div className="bg-white/20 backdrop-blur-sm p-3 rounded-2xl border border-white/20 flex items-center justify-between">
+                <div>
+                  <div className="text-xs text-amber-100">Dark Store Serving You</div>
+                  <div className="text-sm font-black">{selectedLocation.store}</div>
                 </div>
-                <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-800/60 border border-slate-700/40">
-                  <span className="text-slate-400">Picker SLA (Barcode scan)</span>
-                  <span className="font-bold text-orange-400">72 seconds average</span>
+                <div className="text-2xl font-black bg-white text-orange-600 px-3 py-1 rounded-xl shadow-sm">
+                  ⚡ 8m
                 </div>
-                <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-800/60 border border-slate-700/40">
-                  <span className="text-slate-400">Cold Chain Storage</span>
-                  <span className="font-bold text-cyan-400">Dairy: 3.8°C | Frozen: -18°C</span>
-                </div>
-                <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-800/60 border border-slate-700/40">
-                  <span className="text-slate-400">Geospatial Coverage</span>
-                  <span className="font-bold text-emerald-400">2.8 km Radius geofence</span>
-                </div>
-              </div>
-
-              <div className="mt-5 p-3 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center gap-3">
-                <Clock className="w-5 h-5 text-orange-400 shrink-0" />
-                <p className="text-[11px] text-red-200">
-                  Current dispatch ETA to Sector 62: <strong className="text-white">8 to 11 minutes</strong>
-                </p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 4. CATEGORIES NAVIGATION */}
-      <section className="max-w-7xl mx-auto px-4 py-8">
+      {/* 4. HORIZONTAL CATEGORY CAROUSEL */}
+      <section className="max-w-7xl mx-auto px-4 py-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-black text-slate-900">Grocery Categories</h2>
-          <span className="text-xs font-semibold text-red-600">Mandi Se Taaza Stock</span>
+          <h2 className="text-lg font-black text-slate-900 tracking-tight">Explore Categories</h2>
+          <span className="text-xs font-bold text-red-600">Fresh Inward Today</span>
         </div>
 
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+        <div className="grid grid-cols-4 sm:grid-cols-8 gap-3">
           {CATEGORIES.map((cat) => {
             const isSelected = selectedCategory === cat.id;
             return (
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs md:text-sm font-bold whitespace-nowrap transition-all shrink-0 ${
+                className={`p-3 rounded-2xl flex flex-col items-center text-center transition-all duration-200 border ${
                   isSelected
-                    ? 'bg-indigo-950 text-white shadow-md shadow-indigo-950/20 scale-105'
-                    : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
+                    ? 'bg-red-600 text-white border-red-600 shadow-md shadow-red-600/30 scale-105'
+                    : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-200/80 shadow-sm'
                 }`}
               >
-                <span>{cat.icon}</span>
-                <span>{cat.name}</span>
+                <div className="text-2xl mb-1.5">{cat.icon}</div>
+                <span className="text-[11px] font-bold line-clamp-2 leading-tight">
+                  {cat.name}
+                </span>
               </button>
             );
           })}
         </div>
       </section>
 
-      {/* 5. PRODUCT CATALOG SHELF */}
-      <section className="max-w-7xl mx-auto px-4 py-4">
-        <div className="flex items-center justify-between mb-6">
+      {/* 5. PRODUCT CATALOG GRID */}
+      <section className="max-w-7xl mx-auto px-4 py-2">
+        <div className="flex items-center justify-between mb-5">
           <div>
-            <h2 className="text-2xl font-black text-slate-900 tracking-tight">
+            <h2 className="text-xl font-black text-slate-900 tracking-tight">
               {selectedCategory === 'all'
                 ? 'Trending in Noida Today'
                 : CATEGORIES.find((c) => c.id === selectedCategory)?.name}
             </h2>
-            <p className="text-xs text-slate-500">
-              Showing {filteredProducts.length} verified products available for instant 10-minute dispatch
+            <p className="text-xs text-slate-500 mt-0.5">
+              {filteredProducts.length} items in stock at {selectedLocation.store}
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-slate-600 hidden sm:inline">Sort:</span>
-            <span className="px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-800">
-              ⚡ Sabse Tez Delivery
+            <span className="px-3 py-1 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-black flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              100% In-Stock Guarantee
             </span>
           </div>
         </div>
 
+        {/* Product Cards Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {filteredProducts.map((product) => {
             const count = cart[product.id] || 0;
             return (
               <div
                 key={product.id}
-                className="bg-white rounded-3xl border border-slate-200/80 p-3 flex flex-col justify-between hover:shadow-xl hover:border-red-300 transition-all duration-200 group"
+                className="bg-white rounded-3xl border border-slate-200/90 p-3 flex flex-col justify-between hover:shadow-[0_12px_24px_rgba(0,0,0,0.06)] hover:border-red-300 transition-all duration-200 group relative"
               >
-                <div className="relative mb-3">
-                  <div className="w-full h-36 rounded-2xl overflow-hidden bg-slate-100 relative">
+                {/* Image Box */}
+                <div className="relative mb-2.5">
+                  <div className="w-full h-36 rounded-2xl overflow-hidden bg-slate-50 relative">
                     <img
                       src={product.image}
                       alt={product.name}
@@ -600,24 +521,28 @@ export default function LandingPage() {
                     />
                   </div>
 
+                  {/* ETA Pill */}
                   <div className="absolute top-2 left-2 bg-white/95 backdrop-blur-sm px-2 py-0.5 rounded-lg text-[10px] font-black text-slate-800 shadow-sm flex items-center gap-1">
                     <Clock className="w-3 h-3 text-red-600" />
                     <span>{product.eta}</span>
                   </div>
 
-                  {product.badge && (
-                    <div className="absolute bottom-2 left-2 bg-gradient-to-r from-red-600 to-orange-600 text-white px-2 py-0.5 rounded text-[9px] font-black tracking-wider uppercase shadow">
-                      {product.badge}
+                  {/* Discount Pill */}
+                  {product.discount > 0 && (
+                    <div className="absolute top-2 right-2 bg-emerald-600 text-white px-1.5 py-0.5 rounded-md text-[10px] font-black shadow-sm">
+                      {product.discount}% OFF
                     </div>
                   )}
 
-                  {product.discount > 0 && (
-                    <div className="absolute top-2 right-2 bg-emerald-600 text-white px-1.5 py-0.5 rounded-md text-[10px] font-black shadow">
-                      {product.discount}% OFF
+                  {/* Badge */}
+                  {product.badge && (
+                    <div className="absolute bottom-2 left-2 bg-gradient-to-r from-red-600 to-orange-600 text-white px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider shadow-sm">
+                      {product.badge}
                     </div>
                   )}
                 </div>
 
+                {/* Details */}
                 <div className="flex-1 flex flex-col justify-between">
                   <div>
                     <h3 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-2 leading-snug">
@@ -626,33 +551,35 @@ export default function LandingPage() {
                     <p className="text-[11px] text-slate-500 mt-1 font-medium">{product.weight}</p>
                   </div>
 
-                  <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between">
+                  {/* Price & Add Button */}
+                  <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
                     <div>
-                      <div className="text-xs sm:text-sm font-black text-slate-900">₹{product.price}</div>
+                      <div className="text-sm sm:text-base font-black text-slate-900">₹{product.price}</div>
                       {product.mrp > product.price && (
                         <div className="text-[10px] text-slate-400 line-through">₹{product.mrp}</div>
                       )}
                     </div>
 
+                    {/* Add / Counter */}
                     {count === 0 ? (
                       <button
                         onClick={() => addToCart(product.id)}
-                        className="px-3.5 py-1.5 rounded-xl border border-red-500 bg-red-50 hover:bg-red-600 text-red-600 hover:text-white font-black text-xs transition-all active:scale-95 shadow-sm"
+                        className="px-4 py-1.5 rounded-xl border-2 border-red-600 bg-red-50 hover:bg-red-600 text-red-600 hover:text-white font-black text-xs transition-all active:scale-95 shadow-sm"
                       >
                         ADD
                       </button>
                     ) : (
-                      <div className="flex items-center gap-1.5 bg-red-600 text-white rounded-xl px-1.5 py-1 text-xs font-black shadow-md shadow-red-600/30">
+                      <div className="flex items-center gap-1.5 bg-red-600 text-white rounded-xl px-2 py-1 text-xs font-black shadow-md shadow-red-600/30">
                         <button
                           onClick={() => removeFromCart(product.id)}
-                          className="w-5 h-5 flex items-center justify-center rounded-lg hover:bg-red-700 active:scale-90"
+                          className="w-5 h-5 flex items-center justify-center rounded hover:bg-red-700 active:scale-90"
                         >
                           <Minus className="w-3 h-3" />
                         </button>
                         <span className="w-4 text-center">{count}</span>
                         <button
                           onClick={() => addToCart(product.id)}
-                          className="w-5 h-5 flex items-center justify-center rounded-lg hover:bg-red-700 active:scale-90"
+                          className="w-5 h-5 flex items-center justify-center rounded hover:bg-red-700 active:scale-90"
                         >
                           <Plus className="w-3 h-3" />
                         </button>
@@ -666,67 +593,48 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 6. WHY JALDIWALA SECTION */}
-      <section className="max-w-7xl mx-auto px-4 py-16">
-        <div className="bg-gradient-to-tr from-indigo-950 via-slate-900 to-indigo-950 rounded-3xl p-8 md:p-12 text-white border border-indigo-800/40 relative overflow-hidden">
-          <div className="relative z-10 max-w-2xl">
-            <span className="text-xs font-bold text-orange-400 uppercase tracking-widest">
-              Kyun Chunein JaldiWala?
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-black tracking-tight mt-2 mb-4">
-              Own-Inventory Ka Matlab: 100% Guaranteed Stock & Superfast Delivery!
-            </h2>
-            <p className="text-slate-300 text-sm leading-relaxed mb-8">
-              Local market app mein kirana dukan par samaan na hone par order cancel ho jata hai.
-              <strong> JaldiWala</strong> har ek dark store aur har ek item ka malik khud hai.
-            </p>
+      {/* 6. TRUST & VALUE PROPOSITION */}
+      <section className="max-w-7xl mx-auto px-4 py-12">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center text-xl shrink-0">
+              ⚡
+            </div>
+            <div>
+              <h4 className="font-bold text-sm text-slate-900">10-Minute Rapid Delivery</h4>
+              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                Hyperlocal dark stores located within a 3 km radius across Noida ensure delivery before your tea is ready.
+              </p>
+            </div>
+          </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="flex items-start gap-3 bg-white/5 border border-white/10 p-4 rounded-2xl backdrop-blur-sm">
-                <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="font-bold text-sm text-white">0% Order Cancellation</h4>
-                  <p className="text-xs text-slate-400 mt-1">
-                    Jo app par dikhega, woh dark store rack par 100% available hoga.
-                  </p>
-                </div>
-              </div>
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl shrink-0">
+              🛡️
+            </div>
+            <div>
+              <h4 className="font-bold text-sm text-slate-900">100% Owned Inventory</h4>
+              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                We own our warehouses, cold chains, and inventory. No third-party kirana shop delays or out-of-stock cancellations.
+              </p>
+            </div>
+          </div>
 
-              <div className="flex items-start gap-3 bg-white/5 border border-white/10 p-4 rounded-2xl backdrop-blur-sm">
-                <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="font-bold text-sm text-white">FEFO Expiry Checking</h4>
-                  <p className="text-xs text-slate-400 mt-1">
-                    Kabhi bhi purana doodh ya bread nahi milega. Fresh batch guarantee.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 bg-white/5 border border-white/10 p-4 rounded-2xl backdrop-blur-sm">
-                <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="font-bold text-sm text-white">Cold Chain Maintained</h4>
-                  <p className="text-xs text-slate-400 mt-1">
-                    Ice cream aur butter pighalte nahi hain, -18°C temperature control tote bag.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 bg-white/5 border border-white/10 p-4 rounded-2xl backdrop-blur-sm">
-                <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="font-bold text-sm text-white">Dedicated EV Fleet</h4>
-                  <p className="text-xs text-slate-400 mt-1">
-                    Store ke bahar tainaat partner riders, order pack hote hi 60 second mein rawana.
-                  </p>
-                </div>
-              </div>
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl shrink-0">
+              ❄️
+            </div>
+            <div>
+              <h4 className="font-bold text-sm text-slate-900">Certified Cold Chain (0-4°C)</h4>
+              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                Dairy, meats, and ice creams are preserved at certified sub-zero temperatures and delivered in insulated rider bags.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 7. SLIDE-OUT CART DRAWER */}
+      {/* 7. SLIDE-OUT BASKET DRAWER */}
       {isCartOpen && (
         <div className="fixed inset-0 z-50 flex justify-end">
           <div
@@ -735,39 +643,69 @@ export default function LandingPage() {
           />
 
           <div className="relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col z-10 animate-in slide-in-from-right duration-200">
+            {/* Header */}
             <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
               <div className="flex items-center gap-2">
                 <ShoppingBag className="w-5 h-5 text-red-600" />
-                <h3 className="font-black text-slate-900 text-base">Aapki Basket ({totalCartCount} items)</h3>
+                <h3 className="font-black text-slate-900 text-base">My Basket ({totalCartCount} items)</h3>
               </div>
               <button
                 onClick={() => setIsCartOpen(false)}
-                className="w-8 h-8 rounded-full bg-slate-200/70 hover:bg-slate-300 flex items-center justify-center text-slate-600"
+                className="w-8 h-8 rounded-full bg-slate-200/80 hover:bg-slate-300 flex items-center justify-center text-slate-700"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
+            {/* Delivery address pill */}
             <div className="p-3 bg-red-50 border-b border-red-100 flex items-center justify-between text-xs">
               <div className="flex items-center gap-2 text-red-950">
                 <MapPin className="w-4 h-4 text-red-600 shrink-0" />
                 <div>
-                  <p className="font-bold">Delivering to: {selectedLocation.name.split('(')[0]}</p>
-                  <p className="text-[10px] text-red-700">Estimated delivery in {selectedLocation.eta}</p>
+                  <p className="font-bold">Delivering to: {selectedLocation.name}</p>
+                  <p className="text-[10px] text-red-700">{selectedLocation.sub}</p>
                 </div>
               </div>
               <span className="font-black text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded text-[10px]">
-                FAST DISPATCH
+                ⚡ {selectedLocation.eta}
               </span>
             </div>
 
+            {/* Free Delivery Meter */}
+            {totalCartCount > 0 && (
+              <div className="p-3 bg-slate-50 border-b border-slate-200 text-xs">
+                {cartCalculations.amountToFreeDelivery > 0 ? (
+                  <div>
+                    <div className="flex justify-between text-slate-700 font-semibold mb-1">
+                      <span>Add ₹{cartCalculations.amountToFreeDelivery} more for <strong>FREE Delivery</strong></span>
+                      <span className="text-red-600">₹{cartCalculations.subtotal} / ₹199</span>
+                    </div>
+                    <div className="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden">
+                      <div
+                        className="bg-red-600 h-full rounded-full transition-all duration-300"
+                        style={{ width: `${Math.min(100, (cartCalculations.subtotal / 199) * 100)}%` }}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2 text-emerald-700 font-bold">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                    <span>Yay! You've unlocked FREE Delivery on this order</span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Cart Items */}
             <div className="flex-1 overflow-y-auto p-4 space-y-3">
               {totalCartCount === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center p-6 text-slate-400">
-                  <ShoppingBag className="w-16 h-16 text-slate-300 mb-3 stroke-[1.5]" />
-                  <p className="text-base font-bold text-slate-700">Aapki basket abhi khaali hai</p>
+                  <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center text-3xl mb-3">
+                    🛒
+                  </div>
+                  <p className="text-base font-bold text-slate-800">Your basket is empty</p>
                   <p className="text-xs text-slate-400 mt-1 max-w-xs">
-                    Taaza doodh, fal, sabziyan ya snacks add kijiye aur 10 minute mein payiye.
+                    Add fresh milk, bread, farm vegetables or snacks to start your 10-minute order.
                   </p>
                 </div>
               ) : (
@@ -777,7 +715,7 @@ export default function LandingPage() {
                   return (
                     <div
                       key={id}
-                      className="flex items-center justify-between gap-3 p-3 rounded-2xl border border-slate-100 bg-slate-50/50 hover:bg-slate-50 transition-colors"
+                      className="flex items-center justify-between gap-3 p-3 rounded-2xl border border-slate-100 bg-slate-50/60 hover:bg-slate-50 transition-colors"
                     >
                       <img src={prod.image} alt={prod.name} className="w-12 h-12 rounded-xl object-cover" />
                       <div className="flex-1 min-w-0">
@@ -786,7 +724,7 @@ export default function LandingPage() {
                         <p className="text-xs font-black text-slate-900 mt-0.5">₹{prod.price * qty}</p>
                       </div>
 
-                      <div className="flex items-center gap-1.5 bg-white border border-slate-200 rounded-xl px-1.5 py-1 text-xs font-black shadow-sm">
+                      <div className="flex items-center gap-1.5 bg-white border border-slate-200 rounded-xl px-2 py-1 text-xs font-black shadow-sm">
                         <button
                           onClick={() => removeFromCart(id)}
                           className="w-5 h-5 flex items-center justify-center rounded text-slate-700 hover:bg-slate-100"
@@ -807,12 +745,13 @@ export default function LandingPage() {
               )}
             </div>
 
+            {/* Bill Summary */}
             {totalCartCount > 0 && (
               <div className="p-4 border-t border-slate-200 bg-slate-50 space-y-3">
                 <div className="space-y-1.5 text-xs text-slate-600">
                   <div className="flex justify-between">
                     <span>Items Total</span>
-                    <span className="font-semibold text-slate-800">₹{cartCalculations.subtotal}</span>
+                    <span className="font-semibold text-slate-900">₹{cartCalculations.subtotal}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Delivery Fee</span>
@@ -821,18 +760,18 @@ export default function LandingPage() {
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Handling & Packaging</span>
-                    <span className="font-semibold text-slate-800">₹{cartCalculations.handlingFee}</span>
+                    <span>Handling Fee</span>
+                    <span className="font-semibold text-slate-900">₹{cartCalculations.handlingFee}</span>
                   </div>
                   {cartCalculations.promoDiscount > 0 && (
                     <div className="flex justify-between text-red-600 font-bold">
-                      <span>Promo Discount (JALDI100)</span>
+                      <span>Promo Savings (JALDI100)</span>
                       <span>-₹{cartCalculations.promoDiscount}</span>
                     </div>
                   )}
-                  <div className="border-t border-slate-200 pt-2 flex justify-between font-black text-sm text-slate-900">
-                    <span>Kul Rakam (To Pay)</span>
-                    <span className="text-red-600 text-base">₹{cartCalculations.finalTotal}</span>
+                  <div className="border-t border-slate-200 pt-2 flex justify-between font-black text-base text-slate-900">
+                    <span>To Pay</span>
+                    <span className="text-red-600">₹{cartCalculations.finalTotal}</span>
                   </div>
                 </div>
 
@@ -840,7 +779,7 @@ export default function LandingPage() {
                   onClick={handleCheckout}
                   className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-orange-600 hover:from-red-700 text-white font-black text-sm shadow-lg shadow-red-600/30 flex items-center justify-center gap-2 active:scale-95 transition-all"
                 >
-                  <span>Order Karein • ₹{cartCalculations.finalTotal}</span>
+                  <span>Place Order • ₹{cartCalculations.finalTotal}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
@@ -849,7 +788,63 @@ export default function LandingPage() {
         </div>
       )}
 
-      {/* 8. LIVE ORDER TRACKING MODAL */}
+      {/* 8. LOCATION SELECTOR MODAL */}
+      {isLocationModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"
+            onClick={() => setIsLocationModalOpen(false)}
+          />
+
+          <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 z-10 animate-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+              <div>
+                <h3 className="font-black text-slate-900 text-lg">Select Noida Delivery Zone</h3>
+                <p className="text-xs text-slate-500">Pick your sector to map nearest JaldiWala Dark Store</p>
+              </div>
+              <button
+                onClick={() => setIsLocationModalOpen(false)}
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="space-y-2 max-h-80 overflow-y-auto">
+              {NOIDA_LOCATIONS.map((loc) => {
+                const isSelected = selectedLocation.id === loc.id;
+                return (
+                  <button
+                    key={loc.id}
+                    onClick={() => {
+                      setSelectedLocation(loc);
+                      setIsLocationModalOpen(false);
+                    }}
+                    className={`w-full text-left p-3.5 rounded-2xl border transition-all flex items-center justify-between ${
+                      isSelected
+                        ? 'border-red-600 bg-red-50/50 shadow-sm'
+                        : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                    }`}
+                  >
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-black text-sm text-slate-900">{loc.name}</span>
+                        {isSelected && <span className="text-[10px] font-black bg-red-600 text-white px-1.5 py-0.2 rounded">SELECTED</span>}
+                      </div>
+                      <p className="text-xs text-slate-500 mt-0.5">{loc.sub}</p>
+                    </div>
+                    <span className="px-2.5 py-1 rounded-xl bg-emerald-100 text-emerald-800 text-xs font-black shrink-0">
+                      ⚡ {loc.eta}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 9. LIVE ORDER TRACKING MODAL */}
       {isOrderModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
@@ -858,14 +853,15 @@ export default function LandingPage() {
           />
 
           <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl p-6 z-10 animate-in zoom-in-95 duration-200 overflow-hidden">
+            {/* Header */}
             <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
-              <div className="flex items-center gap-2.5">
-                <img src="/logo.png" alt="JaldiWala" className="w-8 h-8 object-contain" />
+              <div className="flex items-center gap-3">
+                <img src="/logo.png" alt="JaldiWala" className="h-10 w-auto object-contain" />
                 <div>
-                  <span className="text-[10px] font-bold text-red-600 uppercase tracking-widest">
-                    JaldiWala Live Telematics
+                  <span className="text-[10px] font-black text-red-600 uppercase tracking-widest">
+                    Live Telematics Dispatch
                   </span>
-                  <h3 className="text-xl font-black text-slate-900">Order #JW-NOIDA-62-9821</h3>
+                  <h3 className="text-lg font-black text-slate-900">Order #JW-NOIDA-62-9821</h3>
                 </div>
               </div>
               <button
@@ -876,26 +872,28 @@ export default function LandingPage() {
               </button>
             </div>
 
-            <div className="bg-gradient-to-r from-red-600 to-indigo-900 text-white rounded-2xl p-4 mb-6 shadow-md shadow-red-600/20">
+            {/* ETA Countdown Card */}
+            <div className="bg-gradient-to-r from-red-600 via-rose-600 to-indigo-950 text-white rounded-2xl p-4 mb-5 shadow-md shadow-red-600/20">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs uppercase tracking-wider font-semibold opacity-90">Pahunch Raha Hai</p>
+                  <p className="text-xs uppercase tracking-wider font-semibold opacity-90">Arriving At Your Door</p>
                   <p className="text-3xl font-black tracking-tight">8 Mins 42 Secs</p>
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-2xl">
+                <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-2xl">
                   ⚡
                 </div>
               </div>
               <p className="text-[11px] text-red-100 mt-2">
-                Address: <span className="font-bold text-white">{selectedLocation.name}</span>
+                Delivering to: <strong className="text-white">{selectedLocation.name}</strong>
               </p>
             </div>
 
-            <div className="space-y-4 mb-6">
+            {/* Stepper Visualizer */}
+            <div className="space-y-3.5 mb-5">
               {[
-                { step: 1, title: 'Order Placed & Confirmed', desc: 'Razorpay UPI Se Payment Verified', icon: CheckCircle2 },
-                { step: 2, title: 'Store Accepted & Items Picking', desc: 'JW-MFC-04 Noida Sec 62 (Barcode scanner SLA 72s)', icon: Clock },
-                { step: 3, title: 'Packed & Barcode Verified', desc: 'FEFO checked & security sealed in tote', icon: ShieldCheck },
+                { step: 1, title: 'Order Placed & Confirmed', desc: 'Verified via Razorpay UPI', icon: CheckCircle2 },
+                { step: 2, title: 'Store Accepted & Picking Items', desc: `${selectedLocation.store} (Barcode scan SLA 72s)`, icon: Clock },
+                { step: 3, title: 'Packed & Barcode Verified', desc: 'FEFO checked & security sealed', icon: ShieldCheck },
                 { step: 4, title: 'Rider Out for Delivery', desc: 'Ramesh Kumar (Hero Splendor EV • 4.9 ★)', icon: Truck },
               ].map((item) => {
                 const isPassed = orderStep >= item.step;
@@ -918,7 +916,7 @@ export default function LandingPage() {
                           {item.title}
                         </h4>
                         {isCurrent && (
-                          <span className="px-1.5 py-0.5 rounded text-[9px] font-black bg-red-100 text-red-700 animate-pulse">
+                          <span className="px-1.5 py-0.2 rounded text-[9px] font-black bg-red-100 text-red-700 animate-pulse">
                             IN PROGRESS
                           </span>
                         )}
@@ -930,16 +928,18 @@ export default function LandingPage() {
               })}
             </div>
 
+            {/* Delivery OTP */}
             <div className="p-3.5 rounded-2xl bg-amber-50 border border-amber-200/80 flex items-center justify-between">
               <div>
                 <p className="text-xs font-bold text-amber-900">Delivery Confirmation OTP</p>
-                <p className="text-[11px] text-amber-700">Rider ko bag lene par ye OTP dein</p>
+                <p className="text-[11px] text-amber-700">Share with rider upon bag handover</p>
               </div>
               <div className="font-mono text-xl font-black text-amber-950 tracking-widest bg-white px-3 py-1 rounded-xl border border-amber-300 shadow-sm">
                 4829
               </div>
             </div>
 
+            {/* Test Step Controller */}
             <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
               <span>Showcase State Simulator:</span>
               <div className="flex gap-1.5">
@@ -960,7 +960,7 @@ export default function LandingPage() {
         </div>
       )}
 
-      {/* 9. STICKY MOBILE CART BAR */}
+      {/* 10. STICKY MOBILE CART BAR */}
       {totalCartCount > 0 && !isCartOpen && (
         <div className="fixed bottom-4 left-4 right-4 md:hidden z-30">
           <button
@@ -971,26 +971,20 @@ export default function LandingPage() {
               <span className="w-6 h-6 rounded-full bg-white text-red-600 text-xs flex items-center justify-center font-black">
                 {totalCartCount}
               </span>
-              <span>Basket Dekhein</span>
+              <span>View Basket</span>
             </div>
-            <span>₹{cartCalculations.finalTotal} • Order Karein &rarr;</span>
+            <span>₹{cartCalculations.finalTotal} • Checkout &rarr;</span>
           </button>
         </div>
       )}
 
-      {/* 10. FOOTER WITH JALDIWALA BRANDING */}
-      <footer className="border-t border-slate-200 bg-white text-slate-600 text-xs mt-20">
+      {/* 11. FOOTER */}
+      <footer className="border-t border-slate-200 bg-white text-slate-600 text-xs mt-16">
         <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-3">
-            <div className="flex items-center gap-2.5">
-              <img src="/logo.png" alt="JaldiWala" className="w-9 h-9 object-contain" />
-              <div className="flex items-baseline text-2xl font-black">
-                <span className="text-red-600">Jaldi</span>
-                <span className="text-indigo-950">Wala</span>
-              </div>
-            </div>
+            <img src="/logo.png" alt="JaldiWala" className="h-12 w-auto object-contain" />
             <p className="text-slate-500 text-xs leading-relaxed">
-              India ka vertically integrated own-inventory quick commerce platform. Noida & Delhi NCR mein 10-minute grocery fulfillment.
+              India's vertically integrated own-inventory quick commerce platform. Serving Noida & Delhi NCR with 10-minute grocery fulfillment.
             </p>
             <div className="pt-2 text-[11px] text-slate-400">
               FSSAI License: <span className="font-mono text-slate-600">10022051000123</span>
@@ -1011,18 +1005,18 @@ export default function LandingPage() {
           </div>
 
           <div>
-            <h4 className="font-bold text-slate-900 mb-3 text-sm">JaldiWala Ecosystem</h4>
+            <h4 className="font-bold text-slate-900 mb-3 text-sm">JaldiWala Platforms</h4>
             <ul className="space-y-1.5 text-slate-500">
               <li>Customer Web Portal (Next.js 15)</li>
               <li>Customer Mobile App (React Native Expo)</li>
-              <li>Rider Partner App (GPS Telematics)</li>
+              <li>Delivery Partner App (GPS Telematics)</li>
               <li>Dark Store Operations Web (Picking/Packing)</li>
               <li>Super Admin Command Center</li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-bold text-slate-900 mb-3 text-sm">Compliance & Suraksha</h4>
+            <h4 className="font-bold text-slate-900 mb-3 text-sm">Compliance & Trust</h4>
             <ul className="space-y-1.5 text-slate-500">
               <li>100% Owned Inventory & Cold Chain</li>
               <li>Consumer Protection E-Commerce Rules 2020</li>
