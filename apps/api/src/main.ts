@@ -45,9 +45,12 @@ async function bootstrap() {
 
   // OpenAPI / Swagger Documentation
   const config = new DocumentBuilder()
-    .setTitle('JaldiWala Quick Commerce Core API')
+    .setTitle('JaldiWala Quick Commerce Core API (Powered by MultiWorkWala)')
     .setDescription(
-      'Production-oriented own-inventory Quick Commerce Platform API for Noida / Delhi NCR.\n\nIncludes 14-state Order State Machine, FEFO Inventory Concurrency Controls, PostGIS Serviceability, and Indian SMS OTP.',
+      'Production-grade own-inventory Quick Commerce Platform API for Noida / Delhi NCR.\n\n' +
+        '⚡ POWERED BY MULTIWORKWALA™ ENTERPRISE CORE\n' +
+        'Proprietary 14-State Order State Machine, FEFO Inventory Concurrency Controls, PostGIS Geofencing, and DLT SMS OTP.\n\n' +
+        '© 2026 JaldiWala Technologies Pvt. Ltd. & MultiWorkWala. All Rights Reserved. Protected under Indian Copyright Act, 1957.',
     )
     .setVersion('1.0.0')
     .addBearerAuth()

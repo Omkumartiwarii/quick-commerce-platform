@@ -56,6 +56,9 @@ export class AppController {
       return {
         name: 'JaldiWala Quick Commerce Platform',
         tagline: '10-Minute Grocery Delivery in Noida & Delhi NCR',
+        poweredBy: 'MultiWorkWala Enterprise Suite',
+        copyright: '© 2026 JaldiWala Technologies Pvt. Ltd. & MultiWorkWala. All Rights Reserved.',
+        legal: 'Protected under Indian Copyright Act, 1957. Unauthorized commercial reproduction is strictly prohibited.',
         status: 'online',
         version: '1.0.0',
         docs: '/docs',

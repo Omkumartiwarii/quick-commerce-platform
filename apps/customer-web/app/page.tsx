@@ -298,6 +298,10 @@ export default function LandingPage() {
             </span>
           </div>
           <div className="hidden md:flex items-center gap-4 text-xs shrink-0 text-white/90">
+            <div className="flex items-center gap-1.5 bg-amber-400/20 text-amber-200 px-2.5 py-0.5 rounded-full border border-amber-400/30 font-bold text-[11px]">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
+              <span>Powered by <strong className="text-white font-black underline decoration-amber-400">MultiWorkWala</strong></span>
+            </div>
             <span className="flex items-center gap-1">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-300" />
               100% Owned Inventory
@@ -316,13 +320,19 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4 lg:gap-8">
           {/* Logo & Location */}
           <div className="flex items-center gap-5 shrink-0">
-            {/* Official JaldiWala Logo */}
-            <div className="cursor-pointer group flex items-center" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            {/* Official JaldiWala Logo & MultiWorkWala Badge */}
+            <div className="cursor-pointer group flex items-center gap-2.5" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
               <img
                 src="/logo.png"
                 alt="JaldiWala - 10-Minute Grocery Delivery"
-                className="h-12 md:h-14 w-auto object-contain transition-transform group-hover:scale-105"
+                className="h-11 md:h-14 w-auto object-contain transition-transform group-hover:scale-105"
               />
+              <div className="hidden lg:flex flex-col">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-950 border border-amber-400/50 text-[10px] font-bold text-slate-200 shadow-sm">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Powered by <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 bg-clip-text text-transparent font-black tracking-wide">MultiWorkWala</span>
+                </span>
+              </div>
             </div>
 
             {/* Location Selector Pill */}
@@ -411,6 +421,10 @@ export default function LandingPage() {
             </div>
 
             <div className="relative z-10 pt-6 flex flex-wrap items-center gap-3">
+              <div className="flex items-center gap-2 bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-400/50 px-3.5 py-1.5 rounded-xl text-xs font-bold text-amber-200 shadow-md backdrop-blur-md">
+                <span className="text-sm">⚡</span>
+                <span>Powered by <strong className="text-white font-black underline decoration-amber-400">MultiWorkWala™</strong></span>
+              </div>
               <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-white/15 text-xs">
                 <Truck className="w-4 h-4 text-orange-400" />
                 <span>Dedicated EV Delivery Fleet</span>
@@ -980,55 +994,109 @@ export default function LandingPage() {
 
       {/* 11. FOOTER */}
       <footer className="border-t border-slate-200 bg-white text-slate-600 text-xs mt-16">
-        <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="space-y-3">
-            <img src="/logo.png" alt="JaldiWala" className="h-12 w-auto object-contain" />
-            <p className="text-slate-500 text-xs leading-relaxed">
-              India's vertically integrated own-inventory quick commerce platform. Serving Noida & Delhi NCR with 10-minute grocery fulfillment.
-            </p>
-            <div className="pt-2 text-[11px] text-slate-400">
-              FSSAI License: <span className="font-mono text-slate-600">10022051000123</span>
-              <br />
-              GSTIN: <span className="font-mono text-slate-600">09AAACF1234D1Z5</span>
+        <div className="max-w-7xl mx-auto px-4 py-12">
+          {/* 4-Column Directory Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-slate-100">
+            <div className="space-y-3">
+              <img src="/logo.png" alt="JaldiWala" className="h-12 w-auto object-contain" />
+              <p className="text-slate-500 text-xs leading-relaxed">
+                India's vertically integrated own-inventory quick commerce platform. Serving Noida & Delhi NCR with 10-minute grocery fulfillment.
+              </p>
+              <div className="pt-2 text-[11px] text-slate-400">
+                FSSAI License: <span className="font-mono text-slate-600 font-bold">10022051000123</span>
+                <br />
+                GSTIN: <span className="font-mono text-slate-600 font-bold">09AAACF1234D1Z5</span>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-bold text-slate-900 mb-3 text-sm">Noida Dark Store Hubs</h4>
+              <ul className="space-y-1.5 text-slate-500">
+                <li>JW-01: Noida Sector 18 (Atta Market)</li>
+                <li>JW-04: Noida Sector 62 (Electronic City)</li>
+                <li>JW-07: Noida Sector 137 (Expressway)</li>
+                <li>JW-09: Noida Sector 76 (Central Noida)</li>
+                <li>JW-12: Greater Noida West (Gaur City)</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-bold text-slate-900 mb-3 text-sm">JaldiWala Platforms</h4>
+              <ul className="space-y-1.5 text-slate-500">
+                <li>Customer Web Portal (Next.js 15)</li>
+                <li>Customer Mobile App (React Native Expo)</li>
+                <li>Delivery Partner App (GPS Telematics)</li>
+                <li>Dark Store Operations Web (Picking/Packing)</li>
+                <li>Super Admin Command Center</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-bold text-slate-900 mb-3 text-sm">Compliance & Trust</h4>
+              <ul className="space-y-1.5 text-slate-500">
+                <li>100% Owned Inventory & Cold Chain</li>
+                <li>Consumer Protection E-Commerce Rules 2020</li>
+                <li>DPDP Act 2023 Compliant</li>
+                <li>DLT-registered Indian SMS OTP</li>
+                <li>Razorpay Verified 256-bit SSL</li>
+              </ul>
             </div>
           </div>
 
-          <div>
-            <h4 className="font-bold text-slate-900 mb-3 text-sm">Noida Dark Store Hubs</h4>
-            <ul className="space-y-1.5 text-slate-500">
-              <li>JW-01: Noida Sector 18 (Atta Market)</li>
-              <li>JW-04: Noida Sector 62 (Electronic City)</li>
-              <li>JW-07: Noida Sector 137 (Expressway)</li>
-              <li>JW-09: Noida Sector 76 (Central Noida)</li>
-              <li>JW-12: Greater Noida West (Gaur City)</li>
-            </ul>
+          {/* POWERED BY MULTIWORKWALA ENTERPRISE SHOWCASE CARD (HIGH-IMPACT HIGHLIGHT) */}
+          <div className="mt-8 p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white border border-slate-800 shadow-2xl relative overflow-hidden">
+            <div className="absolute -right-8 -bottom-8 w-64 h-64 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute left-1/3 top-0 w-44 h-44 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none" />
+
+            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 relative z-10">
+              <div className="flex items-center gap-4 sm:gap-5 flex-col sm:flex-row text-center sm:text-left">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500 via-orange-500 to-rose-600 flex items-center justify-center text-white text-3xl font-black shadow-lg shadow-amber-500/30 shrink-0">
+                  ⚡
+                </div>
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-[11px] font-black uppercase tracking-wider text-amber-300 mb-1.5">
+                    <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                    Official Technology & Infrastructure Partner
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+                    Powered by{' '}
+                    <span className="bg-gradient-to-r from-amber-400 via-orange-300 to-rose-400 bg-clip-text text-transparent underline decoration-amber-400 decoration-wavy">
+                      MultiWorkWala
+                    </span>
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-300 mt-1.5 max-w-2xl leading-relaxed">
+                    Proprietary Quick Commerce Architecture, 14-State Order Automation Engine, High-Concurrency FEFO Dark Store Inventory, and Sub-10ms PostGIS Geofencing telematics engineered by MultiWorkWala.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full lg:w-auto">
+                <div className="px-4 py-2.5 rounded-2xl bg-white/10 border border-white/20 text-white text-xs font-black backdrop-blur-md flex items-center gap-2 shadow-inner w-full sm:w-auto justify-center">
+                  <span className="text-emerald-400 text-sm">✔</span> MultiWorkWala Enterprise Core v2.4
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div>
-            <h4 className="font-bold text-slate-900 mb-3 text-sm">JaldiWala Platforms</h4>
-            <ul className="space-y-1.5 text-slate-500">
-              <li>Customer Web Portal (Next.js 15)</li>
-              <li>Customer Mobile App (React Native Expo)</li>
-              <li>Delivery Partner App (GPS Telematics)</li>
-              <li>Dark Store Operations Web (Picking/Packing)</li>
-              <li>Super Admin Command Center</li>
-            </ul>
+          {/* COPYRIGHT CLAIM & LEGAL PROTECTION */}
+          <div className="mt-8 pt-8 border-t border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
+            <div className="text-center md:text-left leading-relaxed">
+              <p className="font-bold text-slate-800 text-xs">
+                © 2026 JaldiWala Technologies Private Limited. All Rights Reserved.
+              </p>
+              <p className="mt-1 text-slate-500 max-w-3xl">
+                Architected & <strong className="text-slate-800 font-bold">Powered by MultiWorkWala™</strong>. All proprietary source code, dark store telematics, inventory allocation algorithms, and creative visual assets are legally copyrighted under the <strong>Indian Copyright Act, 1957</strong> and relevant international conventions. Any unauthorized copying, distribution, decompilation, or commercial imitation will invoke strict legal action.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-3 text-slate-600 font-semibold shrink-0">
+              <span className="hover:text-red-600 cursor-pointer">Terms of Use</span>
+              <span>•</span>
+              <span className="hover:text-red-600 cursor-pointer">Privacy Policy</span>
+              <span>•</span>
+              <span className="hover:text-red-600 cursor-pointer">Copyright Claim</span>
+              <span>•</span>
+              <span className="hover:text-red-600 cursor-pointer">DPDP Act Compliance</span>
+            </div>
           </div>
-
-          <div>
-            <h4 className="font-bold text-slate-900 mb-3 text-sm">Compliance & Trust</h4>
-            <ul className="space-y-1.5 text-slate-500">
-              <li>100% Owned Inventory & Cold Chain</li>
-              <li>Consumer Protection E-Commerce Rules 2020</li>
-              <li>DPDP Privacy Compliance</li>
-              <li>DLT-registered Indian SMS OTP</li>
-              <li>Razorpay Verified 256-bit SSL</li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="border-t border-slate-100 py-4 px-4 text-center text-slate-400 text-[11px]">
-          © 2026 JaldiWala Technologies Pvt. Ltd. All rights reserved. Built for Noida / Delhi NCR.
         </div>
       </footer>
     </div>
